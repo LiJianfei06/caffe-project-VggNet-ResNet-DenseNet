@@ -1,1 +1,1 @@
-ljftest_alphabet 		·Åµ½caffe-master/examplesÄ¿Â¼ÏÂ¾Í¿ÉÒÔÁË
+ljftest_alphabet 		æ”¾åˆ°caffe-master/examplesç›®å½•ä¸‹å°±å¯ä»¥äº†
