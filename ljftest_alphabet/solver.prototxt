@@ -1,0 +1,15 @@
+test_iter: 10
+test_interval: 1000
+base_lr: 0.00300000002608
+display: 200
+max_iter: 50000
+lr_policy: "inv"
+gamma: 0.000199999994948
+power: 0.949999988079
+momentum: 0.899999976158
+weight_decay: 0.00499999988824
+stepsize: 100000
+snapshot: 10000
+snapshot_prefix: "/home/ljf/caffe-master/examples/ljftest_alphabet/caffe_ljftest_train"
+solver_mode: GPU
+net: "/home/ljf/caffe-master/examples/ljftest_alphabet/train_val.prototxt"
