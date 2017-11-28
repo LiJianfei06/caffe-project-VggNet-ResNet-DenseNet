@@ -6,7 +6,8 @@ import caffe
 from caffe import layers as L,params as P,to_proto
                                                 #导入caffe包
 
-root_str="/home/ljf/caffe-master/examples/ljftest_cifar10_ResNeXt/"
+root_str="/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/"
+
 
 
 def conv_BN_scale_relu(split, bottom, nout, ks, stride, pad): #对输入作 conv—BN—scale—relu
@@ -24,9 +25,10 @@ def conv_BN_scale_relu(split, bottom, nout, ks, stride, pad): #对输入作 conv
         use_global_stats = True #测试的时候我们直接使用输入的参数
     BN = L.BatchNorm(conv, batch_norm_param = dict(use_global_stats = use_global_stats),
                      in_place = True, #BN 的学习率惩罚设置为 0，由 scale 学习
-                     param = [dict(lr_mult = 0, decay_mult = 0),
-                              dict(lr_mult = 0, decay_mult = 0),
-                              dict(lr_mult = 0, decay_mult = 0)])
+#                     param = [dict(lr_mult = 0, decay_mult = 0),
+#                              dict(lr_mult = 0, decay_mult = 0),
+#                              dict(lr_mult = 0, decay_mult = 0)]
+                )
     scale = L.Scale(BN, scale_param = dict(bias_term = True), in_place = True)
     relu = L.ReLU(scale, in_place = True)
     return scale, relu
@@ -49,27 +51,29 @@ def ResNet_block(split, bottom, nout, ks, stride, projection_stride, pad):
     return wise_relu
 
 def ResNet_block1(split, bottom, nout, ks, stride, projection_stride, pad):
-
-    scale0, relu0 = conv_BN_scale_relu(split, bottom, nout, ks, projection_stride, pad)
-    scale3, relu3 = conv_BN_scale_relu(split, bottom, nout, ks, projection_stride, pad)
+    if projection_stride == 1: #1 代表不需要 1X1 的映射
+        scale0 = bottom
+    else: #否则经过 1X1，stride=2 的映射
+        scale0, relu0 = conv_BN_scale_relu(split, bottom, nout, 1, projection_stride, 0)
         
-    scale1, relu1 = conv_BN_scale_relu(split, bottom, nout, ks, projection_stride, pad)
+    scale1, relu1 = conv_BN_scale_relu(split, bottom, nout, 1, projection_stride, 0)
     scale2, relu2 = conv_BN_scale_relu(split, relu1, nout, ks, stride, pad)
-    wise = L.Eltwise(scale2, scale0, scale0,operation = P.Eltwise.SUM) #数据相加
+    scale3, relu3 = conv_BN_scale_relu(split, relu2, nout, 1, stride, 0)
+    wise = L.Eltwise(scale3, scale0, operation = P.Eltwise.SUM) #数据相加
     wise_relu = L.ReLU(wise, in_place = True)
     return wise_relu
 
 def ResNet(split):
     train_data_file = root_str + 'train_lmdb'
     test_data_file = root_str + 'test_lmdb'
-    #mean_file = root_str + 'imagenet_mean.binaryproto'
+   # mean_file = root_str + 'imagenet_mean.binaryproto'
 
 
     if split == 'train':
         data, labels = L.Data(source = train_data_file,
                               backend = P.Data.LMDB,
                               ntop = 2,
-                              batch_size = 128,
+                              batch_size = 32 ,
                               image_data_param=dict(shuffle=True),
                                                     #include={'phase':caffe.TRAIN},
                                                     transform_param = dict(#scale=0.00390625,
@@ -81,12 +85,12 @@ def ResNet(split):
         data, labels = L.Data(source = test_data_file,
                               backend = P.Data.LMDB,
                               ntop = 2,
-                              batch_size = 100,
+                              batch_size = 10,
                               image_data_param=dict(shuffle=True),
                                                     #include={'phase':caffe.TRAIN},
                                                     transform_param = dict(#scale=0.00390625,
                                                                            crop_size = 28,
-                                                                           #mean_file=mean_file, 
+                                                                           #mean_file=mean_file,
                                                                            #mirror=True
                                                                            ))
   
@@ -107,62 +111,22 @@ def ResNet(split):
 #                                                 pad_size = 4#设置 pad 大小
 #                                                 )))        
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
         
-    repeat = 3                          #每个 ConX_X 都有 3 个 Residual Block
+                             #每个 ConX_X 都有 3 个 Residual Block
     
     if split == 'deploy':
-        scale, result = conv_BN_scale_relu(split, bottom="data", nout = 32, ks = 3, stride = 1, pad = 1) #conv1
+        scale, result = conv_BN_scale_relu(split, bottom="data", nout = 16, ks = 3, stride = 1, pad = 1) #conv1
     else:
-        scale, result = conv_BN_scale_relu(split, bottom=data, nout = 32, ks = 3, stride = 1, pad = 1) #conv1
+        scale, result = conv_BN_scale_relu(split, bottom=data, nout = 16, ks = 3, stride = 1, pad = 1) #conv1
 
     
-    repeat = 3 
-    result1=result
+    repeat = 3
     for i in range(repeat):             #conv2_x
         projection_stride = 1           #输入与输出的数据通道数都是 16，大小都是 32 X 32
                                         #可以直接相加，设置映射步长为 1
-        result1 = ResNet_block(split, result1, nout = 32, ks = 3, stride = 1, projection_stride =
+        result = ResNet_block(split, result, nout = 16, ks = 3, stride = 1, projection_stride =
                               projection_stride, pad = 1)
-        
-    result2=result
-    for i in range(repeat):             #conv2_x
-        projection_stride = 1           #输入与输出的数据通道数都是 16，大小都是 32 X 32
-                                        #可以直接相加，设置映射步长为 1
-        result2 = ResNet_block(split, result2, nout = 32, ks = 3, stride = 1, projection_stride =
-                              projection_stride, pad = 1)        
-    result3=result
-    for i in range(repeat):             #conv2_x
-        projection_stride = 1           #输入与输出的数据通道数都是 16，大小都是 32 X 32
-                                        #可以直接相加，设置映射步长为 1
-        result3 = ResNet_block(split, result3, nout = 32, ks = 3, stride = 1, projection_stride =
-                              projection_stride, pad = 1)
-
-    result4=result
-    for i in range(repeat):             #conv2_x
-        projection_stride = 1           #输入与输出的数据通道数都是 16，大小都是 32 X 32
-                                        #可以直接相加，设置映射步长为 1
-        result4 = ResNet_block(split, result4, nout = 32, ks = 3, stride = 1, projection_stride =
-                              projection_stride, pad = 1)
-
-    result5=result
-    for i in range(repeat):             #conv2_x
-        projection_stride = 1           #输入与输出的数据通道数都是 16，大小都是 32 X 32
-                                        #可以直接相加，设置映射步长为 1
-        result5 = ResNet_block(split, result5, nout = 32, ks = 3, stride = 1, projection_stride =
-                              projection_stride, pad = 1)
-        
-    result = L.Eltwise(result1, result2,result3,result4,result5,operation = P.Eltwise.SUM)
         
         
         
@@ -172,15 +136,38 @@ def ResNet(split):
         if i == 0: #只有在刚开始 conv2_x(16 X 16)到 conv3_x(8 X 8)的数据维度不一样，需要映射到相同维度
             projection_stride = 2 # 卷积映射的 stride 为 2
         else:
+            projection_stride = 1 # 卷积映射的 stride 为 1
+        result = ResNet_block(split, result, nout = 32, ks = 3, stride = 1, projection_stride
+                              =projection_stride, pad = 1)
+
+
+    repeat = 3
+    for i in range(repeat): #conv3_x
+        if i == 0: #只有在刚开始 conv2_x(16 X 16)到 conv3_x(8 X 8)的数据维度不一样，需要映射到相同维度
+            projection_stride = 2 # 卷积映射的 stride 为 2
+        else:
             projection_stride = 1 # 卷积映射的 stride 为 2
         result = ResNet_block(split, result, nout = 64, ks = 3, stride = 1, projection_stride
                               =projection_stride, pad = 1)
 
-
-
-
-
-
+    repeat = 3
+    for i in range(repeat): #conv3_x
+        if i == 0: #只有在刚开始 conv2_x(16 X 16)到 conv3_x(8 X 8)的数据维度不一样，需要映射到相同维度
+            projection_stride = 2 # 卷积映射的 stride 为 2
+        else:
+            projection_stride = 1 # 卷积映射的 stride 为 2
+        result = ResNet_block(split, result, nout = 64, ks = 3, stride = 1, projection_stride
+                              =projection_stride, pad = 1)
+    repeat = 3
+    for i in range(repeat): #conv3_x
+        if i == 0: #只有在刚开始 conv2_x(16 X 16)到 conv3_x(8 X 8)的数据维度不一样，需要映射到相同维度
+            projection_stride = 2 # 卷积映射的 stride 为 2
+        else:
+            projection_stride = 1 # 卷积映射的 stride 为 2
+        result = ResNet_block(split, result, nout = 64, ks = 3, stride = 1, projection_stride
+                              =projection_stride, pad = 1)     
+        
+        
 
     pool = L.Pooling(result, pool = P.Pooling.AVE, global_pooling = True)
     #pool = L.Pooling(result, pool=P.Pooling.AVE, kernel_size=4, stride=1,pad=0)  
@@ -217,8 +204,9 @@ def write_sovler():
     #sovler_string.net = my_project_root + 'train_val.prototxt'
     sovler_string.train_net = my_project_root + 'train.prototxt'            #train.prototxt位置指定
     sovler_string.test_net.append(my_project_root + 'test.prototxt')         #test.prototxt位置指定
-    sovler_string.test_iter.append(100)                                        #测试迭代次数
-    sovler_string.test_interval = 100                                        #每训练迭代test_interval次进行一次测试
+    sovler_string.test_iter.append(1000)                                        #测试迭代次数
+    sovler_string.iter_size = 4                                        #每训练迭代test_interval次进行一次测试
+    sovler_string.test_interval = 1000                                        #每训练迭代test_interval次进行一次测试
     sovler_string.base_lr = 0.1                                            #基础学习率   
     sovler_string.momentum = 0.9                                            #动量
     sovler_string.weight_decay = 1e-4                                        #权重衰减
@@ -229,14 +217,15 @@ def write_sovler():
    # sovler_string.power = 0.95                                          
     sovler_string.stepsize = 200000                                     # 当迭代到第一个stepsize次时,lr第一次衰减，衰减后的lr=lr*gamma
     
-    sovler_string.display = 20                                                #每迭代display次显示结果
-    sovler_string.max_iter = 200000                                            #最大迭代数
-    sovler_string.snapshot = 10000                                             #保存临时模型的迭代数
+    sovler_string.display = 200                                                #每迭代display次显示结果
+    sovler_string.max_iter = 100000                                            #最大迭代数
+    sovler_string.snapshot = 2500                                             #保存临时模型的迭代数
     
-    sovler_string.stepvalue.append(int(0.02 * sovler_string.max_iter))
-    sovler_string.stepvalue.append(int(0.2 * sovler_string.max_iter))
-    sovler_string.stepvalue.append(int(0.45 * sovler_string.max_iter))
-    sovler_string.stepvalue.append(int(0.75 * sovler_string.max_iter))    
+    sovler_string.stepvalue.append(32000)
+    sovler_string.stepvalue.append(48000)
+    sovler_string.stepvalue.append(72000)
+    sovler_string.stepvalue.append(96000)
+   
     #sovler_string.snapshot_format = 0                                        #临时模型的保存格式,0代表HDF5,1代表BINARYPROTO
     sovler_string.snapshot_prefix = root_str+'model_save/caffe_ljftest_train'        #模型前缀
 

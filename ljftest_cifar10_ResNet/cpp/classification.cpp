@@ -212,8 +212,8 @@ void Classifier::Preprocess(const cv::Mat& img,
     sample_resized.convertTo(sample_float, CV_32FC1);
 
   cv::Mat sample_normalized;
-  cv::subtract(sample_float, mean_, sample_normalized);
-//cv::subtract(sample_float, cv::Scalar(0, 0,0), sample_normalized);
+  //cv::subtract(sample_float, mean_, sample_normalized);
+  cv::subtract(sample_float, cv::Scalar(0, 0,0), sample_normalized);
   /* This operation will write the separate BGR planes directly to the
    * input layer of the network because it is wrapped by the cv::Mat
    * objects in input_channels. */
@@ -231,7 +231,7 @@ int main(int argc, char** argv) {
   ::google::InitGoogleLogging(argv[0]);
 
   string model_file   = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/deploy.prototxt";
-  string trained_file = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/model_save/caffe_ljftest_train_iter_200000.caffemodel";
+  string trained_file = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/model_save/caffe_ljftest_train_iter_100000.caffemodel";
   string mean_file    = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/imagenet_mean.binaryproto";
   string label_file   = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/test/labels.txt";
   start_time1 = clock();

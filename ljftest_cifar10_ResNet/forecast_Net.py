@@ -10,12 +10,12 @@ import caffe
                                                     
 import numpy as np
 
-root_str="/home/ljf/caffe-master/examples/ljftest_cifar10_VggNet/"
-str_place="/home/ljf/caffe-master/examples/ljftest_cifar10_VggNet/test/image/"
+root_str="/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/"
+str_place="/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/test/image/"
 
 
 def test(my_project_root, deploy_proto):
-    caffe_model = my_project_root + 'model_save/caffe_ljftest_train_iter_10000.caffemodel'        #caffe_model文件的位置
+    caffe_model = my_project_root + 'model_save/caffe_ljftest_train_iter_100000.caffemodel'        #caffe_model文件的位置
     for dirpath, dirnames, filenames in os.walk(str_place):
         print "Directory:%s"%dirpath
         labels_filename = my_project_root + 'test/labels.txt'            #类别名称文件,将数字标签转换回类别名称
@@ -24,7 +24,7 @@ def test(my_project_root, deploy_proto):
         transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})  #设定图片的shape格式(1,3,28,28)
         transformer.set_transpose('data', (2,0,1))                            #改变维度的顺序，由原始图片(28,28,3)变为(3,28,28)
         #transformer.set_mean('data', np.load(root_str+'imagenet_mean.npy').mean(1).mean(1)) #减去均值操作
-        transformer.set_raw_scale('data', 1.0)                                # 缩放到【0，255】之间
+        transformer.set_raw_scale('data', 255.0)                                # 缩放到【0，255】之间
         transformer.set_channel_swap('data', (2,1,0))                       #交换通道，将图片由RGB变为BGR   
         
         ture_mun=0.0
@@ -39,7 +39,7 @@ def test(my_project_root, deploy_proto):
             
             labels = np.loadtxt(labels_filename, str, delimiter='\t')           #读取类别名称文件
            
-            prob = net.blobs['prob'].data[0].flatten()                             #取出最后一层（Softmax）属于某个类别的概率值
+            prob = net.blobs['Softmax1'].data[0].flatten()                             #取出最后一层（Softmax）属于某个类别的概率值
             #print "prob:",prob
             order = prob.argsort()[-1]                                          #将概率值排序，取出最大值所在的序号
             

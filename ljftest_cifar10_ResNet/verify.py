@@ -21,7 +21,7 @@ if __name__ == '__main__':
     caffe.set_device(0)  
     caffe.set_mode_gpu() 
 #选择 caffe 模型，这里选择第 65000 次迭代的数据
-    snapshot_model_dir = root_str +'model_save/caffe_ljftest_train_iter_200000.caffemodel'
+    snapshot_model_dir = root_str +'model_save/caffe_ljftest_train_iter_100000.caffemodel'
 #我们只关注测试阶段的结果，因此只写入 test.prototxt
     test_prototxt_dir = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/test.prototxt" 
     net = caffe.Net(str(test_prototxt_dir), str(snapshot_model_dir), caffe.TEST)
