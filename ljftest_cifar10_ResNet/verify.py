@@ -26,10 +26,10 @@ if __name__ == '__main__':
     test_prototxt_dir = "/home/ljf/caffe-master/examples/ljftest_cifar10_ResNet/test.prototxt" 
     net = caffe.Net(str(test_prototxt_dir), str(snapshot_model_dir), caffe.TEST)
     sum = 0
-#测试 79 次，取平均值
-    for _ in range(100):
+#测试 1000 次，取平均值
+    for _ in range(1000):
         net.forward()
         sum += net.blobs['Accuracy1'].data
         print net.blobs['Accuracy1'].data
-    sum /= 100 
+    sum /= 1000 
     print "sum:",sum

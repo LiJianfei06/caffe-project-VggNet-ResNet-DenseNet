@@ -11,9 +11,7 @@ layer {
     batch_size: 10
     backend: LMDB
   }
-  image_data_param {
-    shuffle: true
-  }
+
 }
 layer {
   name: "Convolution1"
