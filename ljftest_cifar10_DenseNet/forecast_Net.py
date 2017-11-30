@@ -15,7 +15,7 @@ str_place="/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/test/image/"
 
 
 def test(my_project_root, deploy_proto):
-    caffe_model = my_project_root + 'model_save/caffe_ljftest_train_iter_200000.caffemodel'        #caffe_model文件的位置
+    caffe_model = my_project_root + 'model_save/caffe_ljftest_train_iter_100000.caffemodel'        #caffe_model文件的位置
     for dirpath, dirnames, filenames in os.walk(str_place):
         print "Directory:%s"%dirpath
         labels_filename = my_project_root + 'test/labels.txt'            #类别名称文件,将数字标签转换回类别名称

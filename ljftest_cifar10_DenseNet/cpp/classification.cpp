@@ -143,7 +143,6 @@ void Classifier::SetMean(const string& mean_file) {
    * filled with this value. */
   cv::Scalar channel_mean = cv::mean(mean);
   mean_ = cv::Mat(input_geometry_, mean.type(), channel_mean);
- 
 }
 
 std::vector<float> Classifier::Predict(const cv::Mat& img) {
@@ -232,7 +231,7 @@ int main(int argc, char** argv) {
   ::google::InitGoogleLogging(argv[0]);
 
   string model_file   = "/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/deploy.prototxt";
-  string trained_file = "/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/model_save/caffe_ljftest_train_iter_200000.caffemodel";
+  string trained_file = "/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/model_save/caffe_ljftest_train_iter_100000.caffemodel";
   string mean_file    = "/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/imagenet_mean.binaryproto";
   string label_file   = "/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/test/labels.txt";
   start_time1 = clock();

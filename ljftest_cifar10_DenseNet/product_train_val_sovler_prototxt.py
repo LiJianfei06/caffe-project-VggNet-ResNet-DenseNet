@@ -59,7 +59,7 @@ def densenet(data_file=None, mode='train', batch_size=64, depth=20, first_output
                                        ))
     if mode=='test':
          data, label = L.Data(source=data_file, backend=P.Data.LMDB, batch_size=batch_size, ntop=2, 
-                         image_data_param=dict(shuffle=True),
+                         #image_data_param=dict(shuffle=True),
                          transform_param=dict(#mean_file="/home/ljf/caffe-master/examples/ljftest_alphabet_DenseNet/imagenet_mean.binaryproto"
                                    crop_size = 28,
                                    #scale=0.00390625,
@@ -76,24 +76,29 @@ def densenet(data_file=None, mode='train', batch_size=64, depth=20, first_output
                         pad=1, bias_term=False, weight_filler=dict(type='msra'), bias_filler=dict(type='constant'))
 
     #N = (depth-4)/4
-    N=4
+    N=3
     for i in range(N):
         model = add_layer(model, growth_rate, dropout)
         nchannels += growth_rate
     model = transition(model, nchannels, dropout)
     
-    N=6
+    N=3
     for i in range(N):
         model = add_layer(model, growth_rate, dropout)
         nchannels += growth_rate
     model = transition(model, nchannels, dropout)
 
-    N=11
+    N=3
     for i in range(N):
         model = add_layer(model, growth_rate, dropout)
         nchannels += growth_rate
     model = transition(model, nchannels, dropout)
-    
+
+    N=3
+    for i in range(N):
+        model = add_layer(model, growth_rate, dropout)
+        nchannels += growth_rate
+    model = transition(model, nchannels, dropout)    
 #    N=7
 #    for i in range(N):
 #        model = add_layer(model, growth_rate, dropout)
@@ -121,10 +126,10 @@ def make_net():
 
     with open('train.prototxt', 'w') as f:
         #change the path to your data. If it's not lmdb format, also change first line of densenet() function
-        print(str(densenet(root_str+'train_lmdb', mode='train',batch_size=128)), file=f)
+        print(str(densenet(root_str+'train_lmdb', mode='train',batch_size=16)), file=f)
 
     with open('test.prototxt', 'w') as f:
-        print(str(densenet(root_str+'test_lmdb',mode='test', batch_size=100)), file=f)
+        print(str(densenet(root_str+'test_lmdb',mode='test', batch_size=10)), file=f)
 
 def make_solver():
     s = caffe_pb2.SolverParameter()
@@ -132,12 +137,12 @@ def make_solver():
 
     s.train_net = root_str+'train.prototxt'
     s.test_net.append(root_str+'test.prototxt')
-    s.test_interval = 100
-    s.test_iter.append(100)
-
-    s.max_iter = 200000
+    s.test_interval = 1000
+    s.test_iter.append(1000)
+    s.iter_size = 8 
+    s.max_iter = 100000
     s.type = 'Nesterov'
-    s.display = 20
+    s.display = 200
 
     s.base_lr = 0.1
     s.momentum = 0.9
@@ -146,10 +151,10 @@ def make_solver():
     s.lr_policy='multistep'
     s.gamma = 0.1
     s.snapshot=5000
-    s.stepvalue.append(int(0.02 * s.max_iter))
-    s.stepvalue.append(int(0.2 * s.max_iter))
-    s.stepvalue.append(int(0.5 * s.max_iter))
-    s.stepvalue.append(int(0.75 * s.max_iter))
+    s.stepvalue.append(32000)
+    s.stepvalue.append(48000)
+    s.stepvalue.append(72000)
+    s.stepvalue.append(96000)
     s.solver_mode = caffe_pb2.SolverParameter.GPU
 
     solver_path = 'solver.prototxt'

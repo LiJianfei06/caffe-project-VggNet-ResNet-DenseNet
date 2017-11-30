@@ -9,7 +9,7 @@ layer {
   }
   data_param {
     source: "/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/train_lmdb"
-    batch_size: 128
+    batch_size: 16
     backend: LMDB
   }
   image_data_param {
@@ -79,16 +79,16 @@ layer {
   bottom: "Convolution3"
   top: "Convolution3"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -98,11 +98,11 @@ layer {
   top: "Convolution3"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -166,16 +166,16 @@ layer {
   bottom: "Convolution5"
   top: "Convolution5"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -185,11 +185,11 @@ layer {
   top: "Convolution5"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -253,16 +253,16 @@ layer {
   bottom: "Convolution7"
   top: "Convolution7"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -272,11 +272,11 @@ layer {
   top: "Convolution7"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -302,7 +302,7 @@ layer {
   bottom: "Concat3"
   top: "Convolution8"
   convolution_param {
-    num_output: 32
+    num_output: 128
     bias_term: false
     pad: 0
     kernel_size: 1
@@ -321,10 +321,10 @@ layer {
   bottom: "Convolution8"
   top: "Convolution9"
   convolution_param {
-    num_output: 32
+    num_output: 128
     bias_term: false
-    pad: 1
-    kernel_size: 3
+    pad: 0
+    kernel_size: 1
     stride: 1
     weight_filler {
       type: "msra"
@@ -340,16 +340,16 @@ layer {
   bottom: "Convolution9"
   top: "Convolution9"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -359,11 +359,11 @@ layer {
   top: "Convolution9"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -374,22 +374,23 @@ layer {
   top: "Convolution9"
 }
 layer {
-  name: "Concat4"
-  type: "Concat"
-  bottom: "Concat3"
+  name: "Pooling1"
+  type: "Pooling"
   bottom: "Convolution9"
-  top: "Concat4"
-  concat_param {
-    axis: 1
+  top: "Pooling1"
+  pooling_param {
+    pool: AVE
+    kernel_size: 2
+    stride: 2
   }
 }
 layer {
   name: "Convolution10"
   type: "Convolution"
-  bottom: "Concat4"
+  bottom: "Pooling1"
   top: "Convolution10"
   convolution_param {
-    num_output: 160
+    num_output: 32
     bias_term: false
     pad: 0
     kernel_size: 1
@@ -408,10 +409,10 @@ layer {
   bottom: "Convolution10"
   top: "Convolution11"
   convolution_param {
-    num_output: 160
+    num_output: 32
     bias_term: false
-    pad: 0
-    kernel_size: 1
+    pad: 1
+    kernel_size: 3
     stride: 1
     weight_filler {
       type: "msra"
@@ -427,16 +428,16 @@ layer {
   bottom: "Convolution11"
   top: "Convolution11"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -446,11 +447,11 @@ layer {
   top: "Convolution11"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -461,20 +462,19 @@ layer {
   top: "Convolution11"
 }
 layer {
-  name: "Pooling1"
-  type: "Pooling"
+  name: "Concat4"
+  type: "Concat"
+  bottom: "Pooling1"
   bottom: "Convolution11"
-  top: "Pooling1"
-  pooling_param {
-    pool: AVE
-    kernel_size: 2
-    stride: 2
+  top: "Concat4"
+  concat_param {
+    axis: 1
   }
 }
 layer {
   name: "Convolution12"
   type: "Convolution"
-  bottom: "Pooling1"
+  bottom: "Concat4"
   top: "Convolution12"
   convolution_param {
     num_output: 32
@@ -515,16 +515,16 @@ layer {
   bottom: "Convolution13"
   top: "Convolution13"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -534,11 +534,11 @@ layer {
   top: "Convolution13"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -551,7 +551,7 @@ layer {
 layer {
   name: "Concat5"
   type: "Concat"
-  bottom: "Pooling1"
+  bottom: "Concat4"
   bottom: "Convolution13"
   top: "Concat5"
   concat_param {
@@ -602,16 +602,16 @@ layer {
   bottom: "Convolution15"
   top: "Convolution15"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -621,11 +621,11 @@ layer {
   top: "Convolution15"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -651,7 +651,7 @@ layer {
   bottom: "Concat6"
   top: "Convolution16"
   convolution_param {
-    num_output: 32
+    num_output: 224
     bias_term: false
     pad: 0
     kernel_size: 1
@@ -670,10 +670,10 @@ layer {
   bottom: "Convolution16"
   top: "Convolution17"
   convolution_param {
-    num_output: 32
+    num_output: 224
     bias_term: false
-    pad: 1
-    kernel_size: 3
+    pad: 0
+    kernel_size: 1
     stride: 1
     weight_filler {
       type: "msra"
@@ -689,16 +689,16 @@ layer {
   bottom: "Convolution17"
   top: "Convolution17"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -708,11 +708,11 @@ layer {
   top: "Convolution17"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -723,19 +723,20 @@ layer {
   top: "Convolution17"
 }
 layer {
-  name: "Concat7"
-  type: "Concat"
-  bottom: "Concat6"
+  name: "Pooling2"
+  type: "Pooling"
   bottom: "Convolution17"
-  top: "Concat7"
-  concat_param {
-    axis: 1
+  top: "Pooling2"
+  pooling_param {
+    pool: AVE
+    kernel_size: 2
+    stride: 2
   }
 }
 layer {
   name: "Convolution18"
   type: "Convolution"
-  bottom: "Concat7"
+  bottom: "Pooling2"
   top: "Convolution18"
   convolution_param {
     num_output: 32
@@ -776,16 +777,16 @@ layer {
   bottom: "Convolution19"
   top: "Convolution19"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -795,11 +796,11 @@ layer {
   top: "Convolution19"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -810,11 +811,11 @@ layer {
   top: "Convolution19"
 }
 layer {
-  name: "Concat8"
+  name: "Concat7"
   type: "Concat"
-  bottom: "Concat7"
+  bottom: "Pooling2"
   bottom: "Convolution19"
-  top: "Concat8"
+  top: "Concat7"
   concat_param {
     axis: 1
   }
@@ -822,7 +823,7 @@ layer {
 layer {
   name: "Convolution20"
   type: "Convolution"
-  bottom: "Concat8"
+  bottom: "Concat7"
   top: "Convolution20"
   convolution_param {
     num_output: 32
@@ -863,16 +864,16 @@ layer {
   bottom: "Convolution21"
   top: "Convolution21"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -882,11 +883,11 @@ layer {
   top: "Convolution21"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -897,11 +898,11 @@ layer {
   top: "Convolution21"
 }
 layer {
-  name: "Concat9"
+  name: "Concat8"
   type: "Concat"
-  bottom: "Concat8"
+  bottom: "Concat7"
   bottom: "Convolution21"
-  top: "Concat9"
+  top: "Concat8"
   concat_param {
     axis: 1
   }
@@ -909,7 +910,7 @@ layer {
 layer {
   name: "Convolution22"
   type: "Convolution"
-  bottom: "Concat9"
+  bottom: "Concat8"
   top: "Convolution22"
   convolution_param {
     num_output: 32
@@ -950,16 +951,16 @@ layer {
   bottom: "Convolution23"
   top: "Convolution23"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -969,11 +970,11 @@ layer {
   top: "Convolution23"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -984,11 +985,11 @@ layer {
   top: "Convolution23"
 }
 layer {
-  name: "Concat10"
+  name: "Concat9"
   type: "Concat"
-  bottom: "Concat9"
+  bottom: "Concat8"
   bottom: "Convolution23"
-  top: "Concat10"
+  top: "Concat9"
   concat_param {
     axis: 1
   }
@@ -996,10 +997,10 @@ layer {
 layer {
   name: "Convolution24"
   type: "Convolution"
-  bottom: "Concat10"
+  bottom: "Concat9"
   top: "Convolution24"
   convolution_param {
-    num_output: 352
+    num_output: 320
     bias_term: false
     pad: 0
     kernel_size: 1
@@ -1018,7 +1019,7 @@ layer {
   bottom: "Convolution24"
   top: "Convolution25"
   convolution_param {
-    num_output: 352
+    num_output: 320
     bias_term: false
     pad: 0
     kernel_size: 1
@@ -1037,16 +1038,16 @@ layer {
   bottom: "Convolution25"
   top: "Convolution25"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -1056,11 +1057,11 @@ layer {
   top: "Convolution25"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -1071,10 +1072,10 @@ layer {
   top: "Convolution25"
 }
 layer {
-  name: "Pooling2"
+  name: "Pooling3"
   type: "Pooling"
   bottom: "Convolution25"
-  top: "Pooling2"
+  top: "Pooling3"
   pooling_param {
     pool: AVE
     kernel_size: 2
@@ -1084,7 +1085,7 @@ layer {
 layer {
   name: "Convolution26"
   type: "Convolution"
-  bottom: "Pooling2"
+  bottom: "Pooling3"
   top: "Convolution26"
   convolution_param {
     num_output: 32
@@ -1125,16 +1126,16 @@ layer {
   bottom: "Convolution27"
   top: "Convolution27"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -1144,11 +1145,11 @@ layer {
   top: "Convolution27"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -1159,11 +1160,11 @@ layer {
   top: "Convolution27"
 }
 layer {
-  name: "Concat11"
+  name: "Concat10"
   type: "Concat"
-  bottom: "Pooling2"
+  bottom: "Pooling3"
   bottom: "Convolution27"
-  top: "Concat11"
+  top: "Concat10"
   concat_param {
     axis: 1
   }
@@ -1171,7 +1172,7 @@ layer {
 layer {
   name: "Convolution28"
   type: "Convolution"
-  bottom: "Concat11"
+  bottom: "Concat10"
   top: "Convolution28"
   convolution_param {
     num_output: 32
@@ -1212,16 +1213,16 @@ layer {
   bottom: "Convolution29"
   top: "Convolution29"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -1231,11 +1232,11 @@ layer {
   top: "Convolution29"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -1246,11 +1247,11 @@ layer {
   top: "Convolution29"
 }
 layer {
-  name: "Concat12"
+  name: "Concat11"
   type: "Concat"
-  bottom: "Concat11"
+  bottom: "Concat10"
   bottom: "Convolution29"
-  top: "Concat12"
+  top: "Concat11"
   concat_param {
     axis: 1
   }
@@ -1258,7 +1259,7 @@ layer {
 layer {
   name: "Convolution30"
   type: "Convolution"
-  bottom: "Concat12"
+  bottom: "Concat11"
   top: "Convolution30"
   convolution_param {
     num_output: 32
@@ -1299,16 +1300,16 @@ layer {
   bottom: "Convolution31"
   top: "Convolution31"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -1318,11 +1319,11 @@ layer {
   top: "Convolution31"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -1333,11 +1334,11 @@ layer {
   top: "Convolution31"
 }
 layer {
-  name: "Concat13"
+  name: "Concat12"
   type: "Concat"
-  bottom: "Concat12"
+  bottom: "Concat11"
   bottom: "Convolution31"
-  top: "Concat13"
+  top: "Concat12"
   concat_param {
     axis: 1
   }
@@ -1345,10 +1346,10 @@ layer {
 layer {
   name: "Convolution32"
   type: "Convolution"
-  bottom: "Concat13"
+  bottom: "Concat12"
   top: "Convolution32"
   convolution_param {
-    num_output: 32
+    num_output: 416
     bias_term: false
     pad: 0
     kernel_size: 1
@@ -1367,10 +1368,10 @@ layer {
   bottom: "Convolution32"
   top: "Convolution33"
   convolution_param {
-    num_output: 32
+    num_output: 416
     bias_term: false
-    pad: 1
-    kernel_size: 3
+    pad: 0
+    kernel_size: 1
     stride: 1
     weight_filler {
       type: "msra"
@@ -1386,16 +1387,16 @@ layer {
   bottom: "Convolution33"
   top: "Convolution33"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
@@ -1405,11 +1406,11 @@ layer {
   top: "Convolution33"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
@@ -1420,706 +1421,10 @@ layer {
   top: "Convolution33"
 }
 layer {
-  name: "Concat14"
-  type: "Concat"
-  bottom: "Concat13"
-  bottom: "Convolution33"
-  top: "Concat14"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution34"
-  type: "Convolution"
-  bottom: "Concat14"
-  top: "Convolution34"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution35"
-  type: "Convolution"
-  bottom: "Convolution34"
-  top: "Convolution35"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm17"
-  type: "BatchNorm"
-  bottom: "Convolution35"
-  top: "Convolution35"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale17"
-  type: "Scale"
-  bottom: "Convolution35"
-  top: "Convolution35"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU17"
-  type: "ReLU"
-  bottom: "Convolution35"
-  top: "Convolution35"
-}
-layer {
-  name: "Concat15"
-  type: "Concat"
-  bottom: "Concat14"
-  bottom: "Convolution35"
-  top: "Concat15"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution36"
-  type: "Convolution"
-  bottom: "Concat15"
-  top: "Convolution36"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution37"
-  type: "Convolution"
-  bottom: "Convolution36"
-  top: "Convolution37"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm18"
-  type: "BatchNorm"
-  bottom: "Convolution37"
-  top: "Convolution37"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale18"
-  type: "Scale"
-  bottom: "Convolution37"
-  top: "Convolution37"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU18"
-  type: "ReLU"
-  bottom: "Convolution37"
-  top: "Convolution37"
-}
-layer {
-  name: "Concat16"
-  type: "Concat"
-  bottom: "Concat15"
-  bottom: "Convolution37"
-  top: "Concat16"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution38"
-  type: "Convolution"
-  bottom: "Concat16"
-  top: "Convolution38"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution39"
-  type: "Convolution"
-  bottom: "Convolution38"
-  top: "Convolution39"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm19"
-  type: "BatchNorm"
-  bottom: "Convolution39"
-  top: "Convolution39"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale19"
-  type: "Scale"
-  bottom: "Convolution39"
-  top: "Convolution39"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU19"
-  type: "ReLU"
-  bottom: "Convolution39"
-  top: "Convolution39"
-}
-layer {
-  name: "Concat17"
-  type: "Concat"
-  bottom: "Concat16"
-  bottom: "Convolution39"
-  top: "Concat17"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution40"
-  type: "Convolution"
-  bottom: "Concat17"
-  top: "Convolution40"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution41"
-  type: "Convolution"
-  bottom: "Convolution40"
-  top: "Convolution41"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm20"
-  type: "BatchNorm"
-  bottom: "Convolution41"
-  top: "Convolution41"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale20"
-  type: "Scale"
-  bottom: "Convolution41"
-  top: "Convolution41"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU20"
-  type: "ReLU"
-  bottom: "Convolution41"
-  top: "Convolution41"
-}
-layer {
-  name: "Concat18"
-  type: "Concat"
-  bottom: "Concat17"
-  bottom: "Convolution41"
-  top: "Concat18"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution42"
-  type: "Convolution"
-  bottom: "Concat18"
-  top: "Convolution42"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution43"
-  type: "Convolution"
-  bottom: "Convolution42"
-  top: "Convolution43"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm21"
-  type: "BatchNorm"
-  bottom: "Convolution43"
-  top: "Convolution43"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale21"
-  type: "Scale"
-  bottom: "Convolution43"
-  top: "Convolution43"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU21"
-  type: "ReLU"
-  bottom: "Convolution43"
-  top: "Convolution43"
-}
-layer {
-  name: "Concat19"
-  type: "Concat"
-  bottom: "Concat18"
-  bottom: "Convolution43"
-  top: "Concat19"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution44"
-  type: "Convolution"
-  bottom: "Concat19"
-  top: "Convolution44"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution45"
-  type: "Convolution"
-  bottom: "Convolution44"
-  top: "Convolution45"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm22"
-  type: "BatchNorm"
-  bottom: "Convolution45"
-  top: "Convolution45"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale22"
-  type: "Scale"
-  bottom: "Convolution45"
-  top: "Convolution45"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU22"
-  type: "ReLU"
-  bottom: "Convolution45"
-  top: "Convolution45"
-}
-layer {
-  name: "Concat20"
-  type: "Concat"
-  bottom: "Concat19"
-  bottom: "Convolution45"
-  top: "Concat20"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution46"
-  type: "Convolution"
-  bottom: "Concat20"
-  top: "Convolution46"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution47"
-  type: "Convolution"
-  bottom: "Convolution46"
-  top: "Convolution47"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm23"
-  type: "BatchNorm"
-  bottom: "Convolution47"
-  top: "Convolution47"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale23"
-  type: "Scale"
-  bottom: "Convolution47"
-  top: "Convolution47"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU23"
-  type: "ReLU"
-  bottom: "Convolution47"
-  top: "Convolution47"
-}
-layer {
-  name: "Concat21"
-  type: "Concat"
-  bottom: "Concat20"
-  bottom: "Convolution47"
-  top: "Concat21"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "Convolution48"
-  type: "Convolution"
-  bottom: "Concat21"
-  top: "Convolution48"
-  convolution_param {
-    num_output: 704
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "Convolution49"
-  type: "Convolution"
-  bottom: "Convolution48"
-  top: "Convolution49"
-  convolution_param {
-    num_output: 704
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "BatchNorm24"
-  type: "BatchNorm"
-  bottom: "Convolution49"
-  top: "Convolution49"
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-  param {
-    lr_mult: 0.0
-    decay_mult: 0.0
-  }
-}
-layer {
-  name: "Scale24"
-  type: "Scale"
-  bottom: "Convolution49"
-  top: "Convolution49"
-  scale_param {
-    filler {
-      value: 1.0
-    }
-    bias_term: true
-    bias_filler {
-      value: 0.0
-    }
-  }
-}
-layer {
-  name: "ReLU24"
-  type: "ReLU"
-  bottom: "Convolution49"
-  top: "Convolution49"
-}
-layer {
-  name: "Pooling3"
+  name: "Pooling4"
   type: "Pooling"
-  bottom: "Convolution49"
-  top: "Pooling3"
+  bottom: "Convolution33"
+  top: "Pooling4"
   pooling_param {
     pool: AVE
     kernel_size: 2
@@ -2127,49 +1432,49 @@ layer {
   }
 }
 layer {
-  name: "BatchNorm25"
+  name: "BatchNorm17"
   type: "BatchNorm"
-  bottom: "Pooling3"
-  top: "BatchNorm25"
+  bottom: "Pooling4"
+  top: "BatchNorm17"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
 }
 layer {
-  name: "Scale25"
+  name: "Scale17"
   type: "Scale"
-  bottom: "BatchNorm25"
-  top: "BatchNorm25"
+  bottom: "BatchNorm17"
+  top: "BatchNorm17"
   scale_param {
     filler {
-      value: 1.0
+      value: 1
     }
     bias_term: true
     bias_filler {
-      value: 0.0
+      value: 0
     }
   }
 }
 layer {
-  name: "ReLU25"
+  name: "ReLU17"
   type: "ReLU"
-  bottom: "BatchNorm25"
-  top: "BatchNorm25"
+  bottom: "BatchNorm17"
+  top: "BatchNorm17"
 }
 layer {
-  name: "Pooling4"
+  name: "Pooling5"
   type: "Pooling"
-  bottom: "BatchNorm25"
-  top: "Pooling4"
+  bottom: "BatchNorm17"
+  top: "Pooling5"
   pooling_param {
     pool: AVE
     global_pooling: true
@@ -2178,7 +1483,7 @@ layer {
 layer {
   name: "InnerProduct1"
   type: "InnerProduct"
-  bottom: "Pooling4"
+  bottom: "Pooling5"
   top: "InnerProduct1"
   inner_product_param {
     num_output: 10

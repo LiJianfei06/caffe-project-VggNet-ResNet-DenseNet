@@ -26,6 +26,6 @@ if __name__ == '__main__':
     caffe.set_device(0) #设置使用的 GPU 编号
     caffe.set_mode_gpu()#设置迭代采用 GPU 加速模式
     solver = caffe.SGDSolver(str(solver_dir))
-    solver.restore(root_str+"model_save/caffe_ljftest_train_iter_200000.solverstate");
+    solver.restore(root_str+"model_save/caffe_ljftest_train_iter_100000.solverstate");
     for _ in range(4000):
         solver.step(100) 

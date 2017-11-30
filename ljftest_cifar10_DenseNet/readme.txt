@@ -8,7 +8,7 @@
 ============训练============:
 1在/home/ljf/caffe-master目录下执行python examples/ljftest_cifar10_DenseNet/product_train_val_sovler_prototxt.py
 生成train_val.prototxt ; solver.prototxt ; deploy.prototxt ; deploy_fc.prototxt
-2在/home/ljf/caffe-master目录下执行 ./examples/ljftest_cifar10_VggNet/train_net.sh 开始训练caffe.log会记录全部打印内容
+2在/home/ljf/caffe-master目录下执行 ./examples/ljftest_cifar10_DenseNet/train_net.sh 开始训练caffe.log会记录全部打印内容
  或 python ./examples/ljftest_cifar10_DenseNet/run.py >>./examples/ljftest_cifar10_DenseNet/caffe_python.log
 
 

@@ -20,7 +20,7 @@ caffe.set_mode_gpu()
 
 #../scripts/download_model_binary.py ../models/bvlc_reference_caffenet 
 model_def = root_str + 'deploy.prototxt'  
-model_weights = root_str + 'model_save/caffe_ljftest_train_iter_200000.caffemodel'  
+model_weights = root_str + 'model_save/caffe_ljftest_train_iter_100000.caffemodel'  
 
 
 # If you get "No module named _caffe", either you have not built pycaffe or you have the wrong path.  

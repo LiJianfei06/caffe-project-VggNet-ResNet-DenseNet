@@ -19,7 +19,7 @@ root_str="/home/ljf/caffe-master/examples/ljftest_cifar10_DenseNet/"
 
 if __name__ == '__main__':
     
-    snapshot_model_dir = root_str +'model_save/caffe_ljftest_train_iter_200000.caffemodel'
+    snapshot_model_dir = root_str +'model_save/caffe_ljftest_train_iter_100000.caffemodel'
     test_prototxt_dir = root_str+"train.prototxt" 
     net = caffe.Net(str(test_prototxt_dir), str(snapshot_model_dir), caffe.TEST)   
     for name in net.blobs.keys(): #blobs 里面存储的都是每层的数据
