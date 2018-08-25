@@ -17,7 +17,7 @@ if __name__ == '__main__':
     caffe.set_device(0)  
     caffe.set_mode_gpu() 
 #选择 caffe 模型，这里选择第 65000 次迭代的数据
-    snapshot_model_dir = root_str +'model_save/cifar10_ResNet_20_iter_64000.caffemodel'
+    snapshot_model_dir = root_str +'model_save/cifar10_ResNet_20_iter_60000.caffemodel'
 #我们只关注测试阶段的结果，因此只写入 test.prototxt
     test_prototxt_dir = "./test_ResNet_20.prototxt" 
     net = caffe.Net(str(test_prototxt_dir), str(snapshot_model_dir), caffe.TEST)
