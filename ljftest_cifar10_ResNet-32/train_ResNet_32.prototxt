@@ -10,7 +10,7 @@ layer {
   transform_param {
     #mean_file: "./cifar10_mean.binaryproto"
     crop_size: 32
-    scale: 0.0039215684
+    scale: 0.00390625
     mean_value: 125.3
     mean_value: 122.9
     mean_value: 113.8
@@ -18,7 +18,7 @@ layer {
   }
   data_param {
     source: "/home/lijianfei/datasets/cifar10_40/train_lmdb"
-    batch_size: 128
+    batch_size: 64
     backend: LMDB
   }
   image_data_param {
