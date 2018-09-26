@@ -3,7 +3,7 @@
 	
 ljftest_cifar10_VggNet      accuracy: 88.54%;	用VggNet训练			cifar10
 ljftest_cifar10_VggNet_BN   accuracy: 90.00%;	用VggNet+BN训练			cifar10
-ljftest_cifar10_ResNet-20 	accuracy: 92.01%;
+ljftest_cifar10_ResNet-20 	accuracy: 92.09%;
 ljftest_cifar10_ResNet-32 	accuracy: 93.25%;
 ljftest_cifar10_ResNet-44 	accuracy: 93.04%;
 ljftest_cifar10_ResNet-56 	accuracy: 93.26%;
