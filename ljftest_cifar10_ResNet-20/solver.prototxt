@@ -21,6 +21,7 @@ display: 100
 # The maximum number of iterations
 max_iter: 64000
 # snapshot intermediate results
+iter_size: 1
 snapshot: 10000
 snapshot_prefix: "./model_save/cifar10_ResNet_20"
 # solver mode: CPU or GPU
