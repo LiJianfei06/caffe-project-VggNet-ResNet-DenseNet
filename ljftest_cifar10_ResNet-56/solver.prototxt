@@ -24,6 +24,6 @@ max_iter: 64000
 snapshot: 10000
 snapshot_prefix: "./model_save/cifar10_ResNet_56"
 # solver mode: CPU or GPU
-iter_size: 2
+iter_size: 1
 solver_mode: GPU
 type: "Nesterov"
