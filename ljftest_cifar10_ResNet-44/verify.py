@@ -25,7 +25,7 @@ if __name__ == '__main__':
 #测试 1000 次，取平均值
     for _ in range(1000):
         net.forward()
-        sum += net.blobs['Accuracy1'].data
-        print net.blobs['Accuracy1'].data
+        sum += net.blobs['prob'].data
+        print net.blobs['prob'].data
     sum /= 1000 
     print "sum:",sum
