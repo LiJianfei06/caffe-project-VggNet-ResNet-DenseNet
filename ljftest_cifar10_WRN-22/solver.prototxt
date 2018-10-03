@@ -1,6 +1,6 @@
 # The train/test net protocol buffer definition
-train_net: "./train_WRN_20.prototxt"
-test_net: "./test_WRN_20.prototxt"
+train_net: "./train_WRN_22.prototxt"
+test_net: "./test_WRN_22.prototxt"
 # test_iter specifies how many forward passes the test should carry out.
 # In the case of CIFAR10, we have test batch size 100 and 100 test iterations,
 # covering the full 10,000 testing images.
@@ -23,7 +23,7 @@ max_iter: 64000
 # snapshot intermediate results
 iter_size: 2
 snapshot: 10000
-snapshot_prefix: "./model_save/cifar10_WRN_20"
+snapshot_prefix: "./model_save/cifar10_WRN_22"
 # solver mode: CPU or GPU
 solver_mode: GPU
 type: "Nesterov"
