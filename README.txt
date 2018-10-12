@@ -1,6 +1,4 @@
-﻿这些文件夹放到caffe-master/examples目录下就可以了
-
-
+﻿
 ljftest_cifar10_ResNet-20 	Max accuracy: 92.23%;			cifar10 
 ljftest_cifar10_ResNet-32 	Max accuracy: 92.76%;			cifar10 
 ljftest_cifar10_ResNet-44 	Max accuracy: 93.45%;			cifar10 
